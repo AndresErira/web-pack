@@ -60,5 +60,81 @@ Importamos path con require nos permite usar resolve que ya viene incluido en to
 
         npm run build
 
+# [babel loader](link)
+
+Permite preparar el codigo js para que sea compatible con todos los navegadores
+
+para instalar babel usamos
+```s
+        npm install babel-loader -D
+```
+loader de babel
+```s
+        npm install @babel/core -D
+```
+nucleo del recurso
+```s
+        npm install @babel/preset-env -D
+```
+permite trabajar con javascript moderno
+```s
+        npm install @babel/plugin-transform-runtime -D
+```
+Plugin que nos permite trabajar con asincronismo en caso de usar peticiones.
+
+
+o tambien en una linea
+
+```s
+        npm install babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime -D
+```
+
+* Se crea el archivo .babelrc el cual contendra las configuraciones de babel y contendrá un objeto.
+
+```js
+    {
+        "presets":[
+            "@babel/preset-env"
+        ],
+        "plugins":[
+            "@babel/plugin-transform-runtime"
+        ]
+    }
+```
+Se configuró el preset para  javascript moderno y su respectivo plugin
+
+* Ahora debemos tambien modificar webpack.config.js
+* Se agrega el objeto module que contiene las reglas para usar babel, test contiene una expresión regular que declara las extensiones con las que se va a trabajar y exclude nos excluye la carpeta node_modules para que no se rompa el codigo.
+
+```js
+        const path = require('path');
+        module.exports = {
+            entry: './src/index.js',
+            output: {
+                path: path.resolve(__dirname, 'dist'),
+                filename: 'main.js'
+            },
+            resolve:{
+                extensions: ['.js']
+            }
+
+//NUEVA LINEA
+,
+            module:{
+                rules:[
+                    {
+                        test: /\.m?js$/,
+                        exclude: /node_modules/,
+                        use:{
+                            loader: 'babel-loader'
+                        }
+                    }
+                ]
+            }
+
+ //NUEVA LINEA           
+
+        }
+```
 
 <span style="color:green"></span>
